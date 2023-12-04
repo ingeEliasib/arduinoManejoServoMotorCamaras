@@ -113,4 +113,3 @@ AT+BAUDBPS -> Cambia la tasa de datos a BPS
 AT+PINXXXX -> Cambia el pin a XXXX
 
 */
-
