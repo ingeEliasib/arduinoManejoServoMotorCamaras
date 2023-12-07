@@ -34,8 +34,26 @@ void loop() {
   }
   mov_servos();
 }
+// Recibir datos del puerto serial
+void Recibir_Datos() {
+  while (miBT.available() > 0) {
+    c = miBT.read();
+    if (c == '\n') {
+      break;
+    } else {
+      dataIn += c;
+    }
+  }
+}
+void Convertir_Datos() {
+  String str_servo1grado;
+  indexOfA = dataIn.indexOf("A");
+  if (indexOfA > -1) {
+    str_servo1grado = dataIn.substring(0, indexOfA);
+    servo1grado = str_servo1grado.toInt();
+  }
+}
 
-// Resto del código...
 
 void mov_servos() {
   servo1.write(servo1grado);
