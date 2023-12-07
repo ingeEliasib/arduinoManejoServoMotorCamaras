@@ -129,3 +129,33 @@ void loop() {
   }
 }
 
+
+//////////////****** solo leds
+
+const int ledPin5 = 5;
+const int ledPin6 = 6;
+const int ledPin7 = 7;
+
+void setup() {
+  pinMode(ledPin5, OUTPUT);
+  pinMode(ledPin6, OUTPUT);
+  pinMode(ledPin7, OUTPUT);
+}
+
+void loop() {
+  // Encender LED en el pin 5
+  digitalWrite(ledPin5, HIGH);
+  delay(1000);
+  digitalWrite(ledPin5, LOW);
+
+  // Encender LED en el pin 6
+  digitalWrite(ledPin6, HIGH);
+  delay(1000);
+  digitalWrite(ledPin6, LOW);
+
+  // Encender LED en el pin 7
+  digitalWrite(ledPin7, HIGH);
+  delay(1000);
+  digitalWrite(ledPin7, LOW);
+}
+
