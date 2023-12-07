@@ -1,1 +1,36 @@
-/
+//leds via bluetooth
+
+#include <SoftwareSerial.h>
+
+SoftwareSerial miBT(10, 11);  // Pines RX, TX respectivamente
+
+const int ledPin5 = 5;  // Puerto del LED 5
+const int ledPin6 = 6;  // Puerto del LED 6
+const int ledPin7 = 7;  // Puerto del LED 7
+
+void setup() {
+  miBT.begin(9600);
+  pinMode(ledPin5, OUTPUT);
+  pinMode(ledPin6, OUTPUT);
+  pinMode(ledPin7, OUTPUT);
+}
+
+void loop() {
+  if (miBT.available() > 0) {
+    char command = miBT.read();
+    
+    // Encender LEDs
+    if (command == '1') {
+      digitalWrite(ledPin5, HIGH);
+      digitalWrite(ledPin6, HIGH);
+      digitalWrite(ledPin7, HIGH);
+    }
+    
+    // Apagar LEDs
+    else if (command == '0') {
+      digitalWrite(ledPin5, LOW);
+      digitalWrite(ledPin6, LOW);
+      digitalWrite(ledPin7, LOW);
+    }
+  }
+}
