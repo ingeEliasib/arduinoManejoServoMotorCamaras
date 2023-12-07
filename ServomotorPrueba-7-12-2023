@@ -1,0 +1,65 @@
+#include <SoftwareSerial.h>
+#include <Servo.h>
+
+Servo servo1;
+SoftwareSerial miBT(10, 11);  // Pines RX, TX respectivamente
+
+char c;
+String dataIn;
+int servo1grado;
+int indexOfA;
+
+const int ledPin5 = 5;  // Puerto del LED 5
+const int ledPin6 = 6;  // Puerto del LED 6
+const int ledPin7 = 7;  // Puerto del LED 7
+
+void setup() {
+  miBT.begin(9600);
+  Serial.begin(9600);
+  Serial.println("Bluetooth listo");
+  servo1.attach(8);
+  servo1.write(0);
+
+  pinMode(ledPin5, OUTPUT);
+  pinMode(ledPin6, OUTPUT);
+  pinMode(ledPin7, OUTPUT);
+}
+
+void loop() {
+  Recibir_Datos();
+  if (c == '\n') {
+    Convertir_Datos();
+    c = 0;
+    dataIn = "";
+  }
+  mov_servos();
+}
+
+// Resto del código...
+
+void mov_servos() {
+  servo1.write(servo1grado);
+  Serial.print("s1:");
+  Serial.print(servo1grado);
+  Serial.print(" ");
+
+  // Control de los LEDs
+  if (servo1grado > 0) {
+    digitalWrite(ledPin5, HIGH);  // Encender LED en el pin 5
+  } else {
+    digitalWrite(ledPin5, LOW);  // Apagar LED en el pin 5
+  }
+
+  // Puedes ajustar las condiciones según lo que desees hacer con los demás LEDs (pines 6 y 7)
+  if (servo1grado > 30) {
+    digitalWrite(ledPin6, HIGH);  // Encender LED en el pin 6
+  } else {
+    digitalWrite(ledPin6, LOW);  // Apagar LED en el pin 6
+  }
+
+  if (servo1grado > 60) {
+    digitalWrite(ledPin7, HIGH);  // Encender LED en el pin 7
+  } else {
+    digitalWrite(ledPin7, LOW);  // Apagar LED en el pin 7
+  }
+}
