@@ -1,0 +1,76 @@
+
+#include <Servo.h>
+
+Servo servoCam1;
+int angulo;
+int tiempo;
+int backupAngulo, nuevoAngulo=0;
+
+void movimientoEntreAngulos(int anguloAntiguo, int anguloNuevo) {
+  // revisar si el movimiento es menor o mayor
+  if ( anguloAntiguo < anguloNuevo)  {
+
+    for (size_t i = anguloAntiguo; anguloAntiguo <= anguloNuevo ; i++) {
+
+      Servo.write(i);
+      delay(tiempo);
+
+    }
+    
+  }  else  {
+
+    for (size_t i = anguloAntiguo; anguloAntiguo <= anguloNuevo ; i--)
+    {
+      Servo.write(i);
+      delay(tiempo);
+    }
+  }
+
+}
+void  panesGeneral(){
+  
+}
+
+
+void setup() {
+  Serial.begin(9600);
+  servoCam1.attach(8);
+  tiempo = 200;
+}
+
+void loop() {
+  // Primer movimiento de 0 a 180 grados
+  for (angulo = 0; angulo <= 180; angulo += 2) {
+    servoCam1.write(angulo);
+    delay(tiempo);
+  }
+  Serial.println("Primer movimiento completado");
+  delay(6000);
+  miFuncion(10, 3.14);
+  // Segundo movimiento de 180 a 0 grados con pausa cada 45 grados
+  for (angulo = 180; angulo >= 0; angulo -= 2) {
+    servoCam1.write(angulo);
+    delay(tiempo);
+
+    // Agregar pausa de 3 segundos cada 45 grados
+    if (angulo % 35 == 0) {
+      Serial.println("Pausa de 3 segundos");
+      delay(3000);
+    }
+  }
+  Serial.print("fin de 45 grados ");
+
+  Serial.println("Segundo movimiento completado");
+  delay(6000);
+
+  // Tercer movimiento de 0 a 180 grados
+  ///for (angulo = 0; angulo <= 180; angulo += 2) {
+    //servoCam1.write(angulo);
+    //Serial.print("Angulo actual ");
+    //Serial.println(angulo);
+    //delay(tiempo);
+  //}
+
+  Serial.println("Tercer movimiento completado");
+  //delay(6000);
+}
