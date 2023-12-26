@@ -1,0 +1,141 @@
+
+#include <SoftwareSerial.h>
+#include <Servo.h>
+
+SoftwareSerial mySerial(7, 8);  // RX, TX
+char myChar;
+
+//const int LED_BUILTIN_PIN = 13;  // Pin para el LED integrado en Arduino
+const int ROJO_LED_PIN = 2;      // Pin para el diodo ROJO
+const int AMARILLO_LED_PIN = 3;
+const int VERDE_LED_PIN = 4;
+Servo camara1;  // Objeto para controlar el servo
+Servo ServoZoom;
+void setup() {
+  //pinMode(LED_BUILTIN_PIN, OUTPUT);      // Configurar el pin del LED integrado como salida
+  pinMode(ROJO_LED_PIN, OUTPUT);         // Configurar el pin del diodo ROJO
+  pinMode(AMARILLO_LED_PIN, OUTPUT);
+  pinMode(VERDE_LED_PIN, OUTPUT);
+
+  mySerial.begin(38400);                  // Iniciar la comunicación serial para el módulo Bluetooth
+  Serial.begin(38400);                    // Iniciar la comunicación serial para mensajes de control en el Monitor Serie
+
+  camara1.attach(9);  // El pin del servo ahora es el 9
+  ServoZoom.attach(10);//servomotor del zoom
+}
+
+void loop() {
+  digitalWrite(VERDE_LED_PIN, HIGH);//ENCENDER VERDE TODO EL TIEMPO
+  delay(500);//ESPERE MEDIO SEGUNDO 1/2
+  if (mySerial.available()) {
+    digitalWrite(VERDE_LED_PIN, LOW);//APAGAR VERDE
+    digitalWrite(AMARILLO_LED_PIN, HIGH);//ENCENDER AMARILLO
+    myChar = mySerial.read();//LEER SERVOMOTOR
+    delay(100);//ESPERE MEDIO SEGUNDO 1/2
+    digitalWrite(AMARILLO_LED_PIN, LOW);//APAGAR AMARILLO
+    digitalWrite(ROJO_LED_PIN, HIGH);//ENCENDER EL ROJO MIENTRAS DE MUEVE
+    delay(100);//ESPERE UN MOMENTO UNAMILESIMA DE SEGUNDO
+
+    if (myChar == 'w') {
+      ServoZoom.write(55);//AGREGO LOS GRADOS
+      delay(200);
+      ServoZoom.write(90);
+    }
+    if (myChar == 'W') {
+      ServoZoom.write(115);//AGREGO LOS GRADOS
+      delay(200);
+      ServoZoom.write(90);
+    }
+    if (myChar == 'a') {
+      camara1.write(0);//AGREGO LOS GRADOS
+    }
+    else if (myChar == 'A') {//SE REPITE CON DIFERENTES GRADOS
+      camara1.write(10);
+    }
+    else if (myChar == 'b') {
+      camara1.write(20);
+    }
+    else if (myChar == 'B') {
+      camara1.write(30);
+    }
+      else if (myChar == 'c') {
+      camara1.write(40);
+    }
+    else if (myChar == 'C') {
+      camara1.write(50);
+    }
+          else if (myChar == 'd') {
+      camara1.write(60);
+    }
+    else if (myChar == 'D') {
+      camara1.write(70);
+    }
+    else if (myChar == 'e') {
+      camara1.write(80);
+    }
+    else if (myChar == 'E') {
+      camara1.write(85);
+    }
+    else if (myChar == 'f') {
+      camara1.write(90);
+    }
+    else if (myChar == 'F') {
+      camara1.write(95);
+    }
+    else if (myChar == 'g') {
+      camara1.write(100);
+    }
+    else if (myChar == 'G') {
+      camara1.write(110);
+    }
+    else if (myChar == 'h') {
+      camara1.write(120);
+    }
+    else if (myChar == 'i') {
+      camara1.write(130);
+    }
+    else if (myChar == 'I') {
+      camara1.write(140);
+    }
+    else if (myChar == 'j') {
+      camara1.write(150);
+    }
+    else if (myChar == 'k') {
+      camara1.write(160);
+    }
+    else if (myChar == 'l') {
+      camara1.write(170);
+    }
+      else if (myChar == 'L') {
+      delay(500);
+      camara1.write(180);
+    }
+    else if (myChar == 'P'){
+      camara1.write(0);
+      delay(200);
+      //paneo 1  
+    for (int i = 0; i <= 180; i += 2) {
+      camara1.write(i);
+      delay(100);
+    }
+    }
+    else if (myChar == 'p'){
+      camara1.write(180);
+      delay(200);
+      //paneo 1  
+    for (int i = 180; i >= 0; i -= 2) {
+      camara1.write(i);
+      delay(100);
+    }
+    }
+//     else if (myChar >= '0' && myChar <= '180') {
+//       int numero = myChar - '0';
+//       camara1.write(numero);
+// }
+
+
+
+    delay(100);//ESPERO MEDIO SEGUNDO
+    digitalWrite(ROJO_LED_PIN, LOW);//APAGO EL LED ROJO Y SALIMOS
+  }
+}
