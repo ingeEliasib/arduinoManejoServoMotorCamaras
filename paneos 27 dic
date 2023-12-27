@@ -1,0 +1,59 @@
+#include <Servo.h>
+
+Servo miServo; // Cambié el nombre para evitar conflictos con el tipo de dato Servo
+int angulo;
+int tiempo;
+int backupAngulo, nuevoAngulo = 0;
+
+void movimientoEntreAngulos(int anguloAntiguo, int anguloNuevo) {
+  // revisar si el movimiento es menor o mayor
+  if (anguloAntiguo < anguloNuevo) {
+    for (size_t i = anguloAntiguo; i <= anguloNuevo; i++) {
+      miServo.write(i);
+      delay(tiempo);
+      Serial.println(i);
+      
+    }
+  } else {
+    for (size_t i = anguloAntiguo; i >= anguloNuevo; i--) {
+      miServo.write(i);
+      delay(tiempo);
+      Serial.println(i);
+    }
+  }
+}
+
+void paneosGeneral(int x) {
+  if (x == 1) { // Cambié el = por == para comparación en lugar de asignación
+    /* paneo numero uno de cero a 180*/
+    for (size_t i = 0; i <= 180; i++) {
+      miServo.write(i);
+      delay(tiempo);
+    }
+  } else if (x == 2) { // Cambié el = por == para comparación en lugar de asignación
+    /* paneo dos de 180 a cero */
+    for (size_t i = 180; i >= 0; i--) {
+      miServo.write(i);
+      delay(tiempo);
+    }
+  }
+}
+
+
+void setup() {
+  Serial.begin(9600);
+  miServo.attach(8);
+  tiempo = 300;
+}
+
+void loop() {
+  //paneosGeneral(1);
+  Serial.println("Primer movimiento completado");
+  
+ // paneosGeneral(2);
+  Serial.println("Primer movimiento completado");
+  movimientoEntreAngulos(45, 60);
+  Serial.println("movimiento de 45 hasa 60");
+  delay(1000);
+}
+
